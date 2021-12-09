@@ -13,8 +13,8 @@ class All extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Text(
-        "Jami: $jami",
-        style: TextStyle(fontSize: 18),
+        "Жами: $jami",
+        style: const TextStyle(fontSize: 18),
       ),
     );
   }

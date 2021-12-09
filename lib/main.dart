@@ -23,40 +23,51 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   List<String> text_list = [
-    "Subhanalloh",
-    "Alhamdulillah",
-    "Allohu akbar",
-    "La ilaha illallohu vahdahu la sharika lah, lahul mulku va lahul hamd. Va huva 'ala kulli shayin qodir."
+    "Субҳааналлоҳ",
+    "Алҳамдулиллааҳ",
+    "Аллоҳу акбар",
+    "Лаа илааҳа иллаллоҳу ваҳдаҳув лаа шарийка лаҳ, лаҳул мулку ва лаҳул ҳамду ва ҳува ъалаа кулли шайъин қодийр"
   ];
+  void restart() {
+    setState(() {
+      widget.jami = 0;
+      widget.hozirgi = 0;
+      widget.nechtaligi = 33;
+      widget.yozuvSoni = 0;
+      widget.yozuvSoniObshi = 0;
+    });
+  }
 
   void ozgartirgichPlus() {
-    setState(() {
-      if (widget.hozirgi >= 33) {
-        widget.hozirgi = 1;
-      } else {
-        widget.hozirgi++;
-      }
-      if (widget.yozuvSoniObshi <= 32 && widget.yozuvSoniObshi >= 0) {
-        if (widget.yozuvSoniObshi == 0 && widget.yozuvSoni == 3) {
+    setState(
+      () {
+        if (widget.hozirgi >= 33) {
           widget.hozirgi = 1;
+        } else {
+          widget.hozirgi++;
         }
-        widget.nechtaligi = 33;
-        widget.yozuvSoni = 0;
-      } else if (widget.yozuvSoniObshi <= 65 && widget.yozuvSoniObshi >= 33) {
-        widget.yozuvSoni = 1;
-      } else if (widget.yozuvSoniObshi <= 98 && widget.yozuvSoniObshi >= 66) {
-        widget.yozuvSoni = 2;
-      } else {
-        widget.hozirgi = 1;
-        widget.yozuvSoni = 3;
-        widget.yozuvSoniObshi = -1;
-        widget.nechtaligi = 1;
-      }
-      widget.jami++;
-      widget.yozuvSoniObshi++;
-      print("yozuv soni obshi ${widget.yozuvSoniObshi}");
-      print("yozuv soni ${widget.yozuvSoni}");
-    });
+        if (widget.yozuvSoniObshi <= 32 && widget.yozuvSoniObshi >= 0) {
+          if (widget.yozuvSoniObshi == 0 && widget.yozuvSoni == 3) {
+            widget.hozirgi = 1;
+          }
+          widget.nechtaligi = 33;
+          widget.yozuvSoni = 0;
+        } else if (widget.yozuvSoniObshi <= 65 && widget.yozuvSoniObshi >= 33) {
+          widget.yozuvSoni = 1;
+        } else if (widget.yozuvSoniObshi <= 98 && widget.yozuvSoniObshi >= 66) {
+          widget.yozuvSoni = 2;
+        } else if (widget.yozuvSoniObshi == 100) {
+          widget.hozirgi = 1;
+          widget.yozuvSoni = 3;
+          widget.nechtaligi = 1;
+        } else {
+          widget.yozuvSoniObshi = 0;
+        }
+
+        widget.jami++;
+        widget.yozuvSoniObshi++;
+      },
+    );
   }
 
   void ozgartirgichMinus() {
@@ -90,18 +101,6 @@ class _MyAppState extends State<MyApp> {
         widget.nechtaligi = 1;
         widget.yozuvSoniObshi = 99;
       }
-      print("yozuv soni obshi $widget.yozuvSoniObshi");
-      print("yozuv soni $widget.yozuvSoni");
-    });
-  }
-
-  void restart() {
-    setState(() {
-      widget.jami = 0;
-      widget.hozirgi = 0;
-      widget.nechtaligi = 0;
-      widget.yozuvSoni = 0;
-      widget.yozuvSoniObshi = 0;
     });
   }
 
@@ -110,19 +109,16 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.cyan,
+        primarySwatch: Colors.orange,
+        scaffoldBackgroundColor: Colors.white,
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Tasbih app"),
+          title: const Text("Тасбеҳ"),
           actions: [
             IconButton(
-              icon: Icon(Icons.restart_alt),
-              onPressed: () {
-                setState(() {
-                  widget.jami = 0;
-                });
-              },
+              icon: const Icon(Icons.restart_alt),
+              onPressed: () => restart(),
             ),
           ],
         ),

@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 
-class Present extends StatelessWidget {
+class Present extends StatefulWidget {
+  final int hozirgi;
+  final int nechtaligi;
   const Present({
     Key? key,
     required this.hozirgi,
     required this.nechtaligi,
   }) : super(key: key);
 
-  final int hozirgi;
-  final int nechtaligi;
+  @override
+  State<Present> createState() => _PresentState();
+}
 
+class _PresentState extends State<Present> {
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        hozirgi.toString() + "/" + nechtaligi.toString(),
+        "${widget.hozirgi}/${widget.nechtaligi}",
         style: TextStyle(fontSize: 80, fontWeight: FontWeight.bold),
       ),
     );

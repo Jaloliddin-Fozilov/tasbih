@@ -14,7 +14,7 @@ class Buttons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           MaterialButton(
-            color: Colors.blue,
+            color: Colors.orange[800],
             shape: CircleBorder(),
             onPressed: ozgartirgichPlus,
             child: Padding(
@@ -26,7 +26,7 @@ class Buttons extends StatelessWidget {
             ),
           ),
           MaterialButton(
-            color: Colors.blueGrey,
+            color: Colors.orange[400],
             shape: CircleBorder(),
             onPressed: yozuvSoniObshi == 0 ? () {} : ozgartirgichMinus,
             child: Padding(
