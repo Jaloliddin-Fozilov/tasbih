@@ -41,26 +41,34 @@ class _MyAppState extends State<MyApp> {
   void ozgartirgichPlus() {
     setState(
       () {
-        if (widget.hozirgi >= 33) {
-          widget.hozirgi = 1;
-        } else {
+        // if (widget.hozirgi >= 33) {
+        //   widget.hozirgi = 1;
+        // } else {
+        //   widget.hozirgi++;
+        // }
+        // if (widget.yozuvSoniObshi <= 32 && widget.yozuvSoniObshi >= 0) {
+        //   if (widget.yozuvSoniObshi == 0 && widget.yozuvSoni == 3) {
+        //     widget.hozirgi = 1;
+        //   }
+        //   widget.nechtaligi = 33;
+        //   widget.yozuvSoni = 0;
+        // } else if (widget.yozuvSoniObshi <= 65 && widget.yozuvSoniObshi >= 33) {
+        //   widget.yozuvSoni = 1;
+        // } else if (widget.yozuvSoniObshi <= 98 && widget.yozuvSoniObshi >= 66) {
+        //   widget.yozuvSoni = 2;
+        // } else if (widget.yozuvSoniObshi == 100) {
+        //   widget.hozirgi = 1;
+        //   widget.yozuvSoni = 3;
+        //   widget.nechtaligi = 1;
+        // } else {
+        //   widget.yozuvSoniObshi = 0;
+        // }
+
+        if (widget.yozuvSoniObshi < 33) {
           widget.hozirgi++;
-        }
-        if (widget.yozuvSoniObshi <= 32 && widget.yozuvSoniObshi >= 0) {
-          if (widget.yozuvSoniObshi == 0 && widget.yozuvSoni == 3) {
-            widget.hozirgi = 1;
-          }
-          widget.nechtaligi = 33;
-          widget.yozuvSoni = 0;
-        } else if (widget.yozuvSoniObshi <= 65 && widget.yozuvSoniObshi >= 33) {
-          widget.yozuvSoni = 1;
-        } else if (widget.yozuvSoniObshi <= 98 && widget.yozuvSoniObshi >= 66) {
-          widget.yozuvSoni = 2;
-        } else if (widget.yozuvSoniObshi == 100) {
-          widget.hozirgi = 1;
-          widget.yozuvSoni = 3;
-          widget.nechtaligi = 1;
         } else {
+          widget.yozuvSoni++;
+          widget.hozirgi = 0;
           widget.yozuvSoniObshi = 0;
         }
 
