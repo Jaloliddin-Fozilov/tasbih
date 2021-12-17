@@ -25,8 +25,12 @@ class _MyAppState extends State<MyApp> {
   List<String> text_list = [
     "Субҳааналлоҳ",
     "Алҳамдулиллааҳ",
-    "Аллоҳу акбар",
-    "Лаа илааҳа иллаллоҳу ваҳдаҳув лаа шарийка лаҳ, лаҳул мулку ва лаҳул ҳамду ва ҳува ъалаа кулли шайъин қодийр"
+    "Аллоҳу Акбар",
+    "Лаа Илааҳа Иллаллоҳу",
+    "Астағфируллаҳу ва атубу илайҳ",
+    "Субҳаналлоҳи ва биҳамдиҳи",
+    "Субҳаналлоҳил азийм",
+    "Лаа ҳавла ва лаа қуввата иллаа биллааҳ",
   ];
   void restart() {
     setState(() {
@@ -41,35 +45,16 @@ class _MyAppState extends State<MyApp> {
   void ozgartirgichPlus() {
     setState(
       () {
-        // if (widget.hozirgi >= 33) {
-        //   widget.hozirgi = 1;
-        // } else {
-        //   widget.hozirgi++;
-        // }
-        // if (widget.yozuvSoniObshi <= 32 && widget.yozuvSoniObshi >= 0) {
-        //   if (widget.yozuvSoniObshi == 0 && widget.yozuvSoni == 3) {
-        //     widget.hozirgi = 1;
-        //   }
-        //   widget.nechtaligi = 33;
-        //   widget.yozuvSoni = 0;
-        // } else if (widget.yozuvSoniObshi <= 65 && widget.yozuvSoniObshi >= 33) {
-        //   widget.yozuvSoni = 1;
-        // } else if (widget.yozuvSoniObshi <= 98 && widget.yozuvSoniObshi >= 66) {
-        //   widget.yozuvSoni = 2;
-        // } else if (widget.yozuvSoniObshi == 100) {
-        //   widget.hozirgi = 1;
-        //   widget.yozuvSoni = 3;
-        //   widget.nechtaligi = 1;
-        // } else {
-        //   widget.yozuvSoniObshi = 0;
-        // }
-
-        if (widget.yozuvSoniObshi < 33) {
+        if (widget.yozuvSoniObshi < 32) {
           widget.hozirgi++;
+        } else if (widget.yozuvSoni >= text_list.length - 1) {
+          widget.yozuvSoni = 0;
+          widget.hozirgi = 0;
+          widget.yozuvSoniObshi = 0;
         } else {
           widget.yozuvSoni++;
           widget.hozirgi = 0;
-          widget.yozuvSoniObshi = 0;
+          widget.yozuvSoniObshi = -1;
         }
 
         widget.jami++;
@@ -79,37 +64,31 @@ class _MyAppState extends State<MyApp> {
   }
 
   void ozgartirgichMinus() {
-    setState(() {
-      if (widget.hozirgi == -0) {
-        widget.hozirgi = 33;
-      } else {
-        widget.hozirgi--;
-      }
-      if (widget.hozirgi != 0) {
+    setState(
+      () {
+        if (widget.yozuvSoniObshi < 32) {
+          widget.hozirgi--;
+        }
+        if (widget.jami > 0 && widget.jami != 0) {
+          print(widget.yozuvSoni);
+          widget.yozuvSoni--;
+          print(widget.yozuvSoni);
+          widget.hozirgi = 33;
+          widget.yozuvSoniObshi = 33;
+        } else if (widget.yozuvSoni >= text_list.length - 1) {
+          widget.yozuvSoni = 0;
+          widget.hozirgi = 0;
+          widget.yozuvSoniObshi = 0;
+        } else {
+          widget.yozuvSoni--;
+          widget.hozirgi = 0;
+          widget.yozuvSoniObshi = 0;
+        }
+
         widget.jami--;
         widget.yozuvSoniObshi--;
-      }
-      if (widget.yozuvSoniObshi == 1 &&
-          widget.yozuvSoni == 0 &&
-          widget.hozirgi == 0) {
-        widget.yozuvSoniObshi = 0;
-        widget.jami = 0;
-      }
-      if (widget.yozuvSoniObshi <= 33 && widget.yozuvSoniObshi >= 0) {
-        widget.nechtaligi = 33;
-        widget.yozuvSoni = 0;
-      } else if (widget.yozuvSoniObshi <= 66 && widget.yozuvSoniObshi >= 32) {
-        widget.yozuvSoni = 1;
-      } else if (widget.yozuvSoniObshi <= 100 && widget.yozuvSoniObshi >= 67) {
-        widget.yozuvSoni = 2;
-        widget.nechtaligi = 33;
-      } else {
-        widget.hozirgi = 0;
-        widget.yozuvSoni = 3;
-        widget.nechtaligi = 1;
-        widget.yozuvSoniObshi = 99;
-      }
-    });
+      },
+    );
   }
 
   @override
