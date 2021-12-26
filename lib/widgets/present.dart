@@ -19,7 +19,7 @@ class _PresentState extends State<Present> {
     return Center(
       child: Text(
         "${widget.hozirgi}/${widget.nechtaligi}",
-        style: TextStyle(fontSize: 80, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 58, fontWeight: FontWeight.bold),
       ),
     );
   }

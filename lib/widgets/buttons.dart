@@ -1,40 +1,40 @@
 import 'package:flutter/material.dart';
+import './rotation.dart';
 
-class Buttons extends StatelessWidget {
+class Buttons extends StatefulWidget {
   final Function() ozgartirgichPlus;
   final int yozuvSoniObshi;
-  final Function() ozgartirgichMinus;
 
-  Buttons(this.ozgartirgichPlus, this.yozuvSoniObshi, this.ozgartirgichMinus);
+  Buttons(
+    this.ozgartirgichPlus,
+    this.yozuvSoniObshi,
+  );
 
   @override
+  State<Buttons> createState() => _ButtonsState();
+}
+
+class _ButtonsState extends State<Buttons> {
+  int _counter = 0;
+  @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedRotationCustom(
+      angle: _counter * 15,
+      duration: const Duration(milliseconds: 90),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          MaterialButton(
-            color: Colors.orange[800],
-            shape: CircleBorder(),
-            onPressed: ozgartirgichPlus,
-            child: Padding(
-              padding: const EdgeInsets.all(50),
-              child: Text(
-                '+',
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
-            ),
-          ),
-          MaterialButton(
-            color: Colors.orange[400],
-            shape: CircleBorder(),
-            onPressed: yozuvSoniObshi == 0 ? () {} : ozgartirgichMinus,
-            child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                '-',
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
+          InkWell(
+            onTap: () {
+              setState(() {
+                _counter++;
+              });
+              widget.ozgartirgichPlus();
+            },
+            borderRadius: BorderRadius.circular(180),
+            child: Image.asset(
+              'assets/images/image.png',
+              width: 250,
             ),
           ),
         ],

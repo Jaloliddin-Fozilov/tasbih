@@ -4,7 +4,7 @@ class ListText extends StatefulWidget {
   final List text_list;
   final int yozuvSoni;
 
-  ListText(this.text_list, this.yozuvSoni);
+  const ListText(this.text_list, this.yozuvSoni);
 
   @override
   State<ListText> createState() => _ListTextState();
@@ -18,8 +18,9 @@ class _ListTextState extends State<ListText> {
     return Center(
       child: Text(
         text,
-        style: TextStyle(
-          fontSize: 25,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 22,
         ),
       ),
     );
