@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="uz.iportal.tasbih01.tasbih">
+    <uses-permission android:name="android.permission.VIBRATE"/>
    <application
         android:label="tasbih"
         android:icon="@mipmap/ic_launcher">

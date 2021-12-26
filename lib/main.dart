@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
+
 import './widgets/buttons.dart';
 import './widgets/all.dart';
 import './widgets/present.dart';
-import 'widgets/listText.dart';
+import './widgets/listText.dart';
 
 void main() {
   runApp(MyApp());
@@ -52,6 +54,7 @@ class _MyAppState extends State<MyApp> {
           widget.yozuvSoniObshi = 0;
         } else {
           widget.yozuvSoni++;
+          Vibration.vibrate(duration: 350);
           widget.hozirgi = 0;
           widget.yozuvSoniObshi = -1;
         }
