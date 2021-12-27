@@ -71,8 +71,8 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Andika',
-        primaryColor: const Color.fromRGBO(39, 54, 73, 1),
-        scaffoldBackgroundColor: const Color.fromRGBO(39, 54, 73, 1),
+        primaryColor: const Color.fromRGBO(2, 25, 69, 1),
+        scaffoldBackgroundColor: const Color.fromRGBO(2, 25, 69, 1),
         textTheme: const TextTheme(
           bodyText2: TextStyle(
             color: Color.fromRGBO(224, 191, 94, 1),
@@ -104,7 +104,7 @@ class _MyAppState extends State<MyApp> {
           child: Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/background.jpg'),
+                image: AssetImage('assets/images/background.png'),
                 fit: BoxFit.cover,
               ),
             ),

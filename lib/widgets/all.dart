@@ -14,7 +14,7 @@ class All extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Text(
         "Жами: $jami",
-        style: const TextStyle(fontSize: 18),
+        style: const TextStyle(fontSize: 22),
       ),
     );
   }

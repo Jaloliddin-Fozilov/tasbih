@@ -20,7 +20,7 @@ class _ButtonsState extends State<Buttons> {
   Widget build(BuildContext context) {
     return AnimatedRotationCustom(
       angle: _counter * 15,
-      duration: const Duration(milliseconds: 90),
+      duration: const Duration(milliseconds: 300),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
