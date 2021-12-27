@@ -17,6 +17,7 @@ class _ListTextState extends State<ListText> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.transparent),
           borderRadius: const BorderRadius.all(
