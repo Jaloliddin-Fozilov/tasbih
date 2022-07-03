@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class Present extends StatefulWidget {
-  final int hozirgi;
-  final int nechtaligi;
+  final int current;
+  final int count;
   const Present({
     Key? key,
-    required this.hozirgi,
-    required this.nechtaligi,
+    required this.current,
+    required this.count,
   }) : super(key: key);
 
   @override
@@ -18,8 +18,8 @@ class _PresentState extends State<Present> {
   Widget build(BuildContext context) {
     return Center(
       child: Text(
-        "${widget.hozirgi}/${widget.nechtaligi}",
-        style: TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
+        "${widget.current}/${widget.count}",
+        style: const TextStyle(fontSize: 72, fontWeight: FontWeight.bold),
       ),
     );
   }

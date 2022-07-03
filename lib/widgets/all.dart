@@ -3,17 +3,24 @@ import 'package:flutter/material.dart';
 class All extends StatelessWidget {
   const All({
     Key? key,
-    required this.jami,
+    required this.all,
   }) : super(key: key);
 
-  final int jami;
+  final int all;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
+    return Container(
+      padding: const EdgeInsets.all(10.0),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.transparent),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(30.0),
+        ),
+        color: const Color(0xff021233).withOpacity(0.8),
+      ),
       child: Text(
-        "Жами: $jami",
+        "Жами: $all",
         style: const TextStyle(fontSize: 22),
       ),
     );

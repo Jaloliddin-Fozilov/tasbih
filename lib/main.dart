@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vibration/vibration.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:vibration/vibration.dart';
 
 import './widgets/buttons.dart';
 import './widgets/all.dart';
@@ -11,11 +12,27 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  int hozirgi = 0;
-  int jami = 0;
-  int yozuvSoni = 0;
-  int yozuvSoniObshi = 0;
-  int nechtaligi = 33;
+  int current = 0;
+  int all = 0;
+  int textCount = 0;
+  int textCountAll = 0;
+  int count = 33;
+
+  saveValues(
+    int currentToSave,
+    int all,
+    int textCount,
+    int textCountAllToSave,
+    int countToSave,
+  ) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('currentToSave', currentToSave);
+    prefs.setInt('allToSave', all);
+    prefs.setInt('textCountToSave', textCount);
+    prefs.setInt('textCountAllToSave', textCountAllToSave);
+    prefs.setInt('countToSave', countToSave);
+  }
+
   @override
   _MyAppState createState() {
     return _MyAppState();
@@ -23,50 +40,112 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<String> text_list = [
-    "Субҳааналлоҳ",
-    "Алҳамдулиллааҳ",
-    "Аллоҳу Акбар",
-    "Лаа Илааҳа Иллаллоҳу",
-    "Астағфируллаҳу ва атубу илайҳ",
-    "Субҳаналлоҳи ва биҳамдиҳи",
-    "Субҳаналлоҳил азийм",
-    "Лаа ҳавла ва лаа қуввата иллаа биллааҳ",
-  ];
-  void restart() {
+  getValues() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      widget.jami = 0;
-      widget.hozirgi = 0;
-      widget.nechtaligi = 33;
-      widget.yozuvSoni = 0;
-      widget.yozuvSoniObshi = 0;
+      widget.current = prefs.getInt('currentToSave')!;
+      widget.all = prefs.getInt('allToSave')!;
+      widget.textCount = prefs.getInt('textCountToSave')!;
+      widget.textCountAll = prefs.getInt('textCountAllToSave')!;
+      widget.count = prefs.getInt('countToSave')!;
     });
   }
 
-  void ozgartirgichPlus() {
+  List<Map<String, dynamic>> mapList = [
+    {
+      "count": 33,
+      "text": "Субҳааналлоҳ",
+    },
+    {
+      "count": 33,
+      "text": "Алҳамдулиллааҳ",
+    },
+    {
+      "count": 33,
+      "text": "Аллоҳу Акбар",
+    },
+    {
+      "count": 1,
+      "text":
+          "Лаа илааҳа иллаллоҳу ваҳдаҳув лаа шарийка лаҳ, лаҳул мулку ва лаҳул ҳамду ва ҳува ъалаа кулли шайъин қодийр",
+    },
+  ];
+
+  void restart() {
+    setState(() {
+      widget.all = 0;
+      widget.current = 0;
+      widget.count = 33;
+      widget.textCount = 0;
+      widget.textCountAll = 0;
+      widget.saveValues(
+        widget.current,
+        widget.all,
+        widget.textCount,
+        widget.textCountAll,
+        widget.count,
+      );
+      print('vibration 500');
+      // Vibration.vibrate(duration: 500);
+    });
+  }
+
+  void changerPlus() {
     setState(
       () {
-        if (widget.yozuvSoniObshi < 32) {
-          widget.hozirgi++;
-        } else if (widget.yozuvSoni >= text_list.length - 1) {
-          widget.yozuvSoni = 0;
-          widget.hozirgi = 0;
-          widget.yozuvSoniObshi = 0;
+        if (widget.textCountAll < mapList[widget.textCount]['count'] - 1) {
+          widget.current++;
+          widget.saveValues(
+            widget.current,
+            widget.all,
+            widget.textCount,
+            widget.textCountAll,
+            widget.count,
+          );
+        } else if (widget.textCount >= mapList.length - 1) {
+          widget.textCount = 0;
+          widget.current = 0;
+          widget.textCountAll = 0;
+          print('vibration 350');
+          // Vibration.vibrate(duration: 350);
+          widget.saveValues(
+            widget.current,
+            widget.all,
+            widget.textCount,
+            widget.textCountAll,
+            widget.count,
+          );
         } else {
-          widget.yozuvSoni++;
-          Vibration.vibrate(duration: 350);
-          widget.hozirgi = 0;
-          widget.yozuvSoniObshi = -1;
+          widget.textCount++;
+          print('vibration 350');
+          // Vibration.vibrate(duration: 350);
+          widget.current = 0;
+          widget.textCountAll = -1;
+          widget.saveValues(
+            widget.current,
+            widget.all,
+            widget.textCount,
+            widget.textCountAll,
+            widget.count,
+          );
         }
 
-        widget.jami++;
-        widget.yozuvSoniObshi++;
+        widget.all++;
+        widget.textCountAll++;
+        widget.saveValues(
+          widget.current,
+          widget.all,
+          widget.textCount,
+          widget.textCountAll,
+          widget.count,
+        );
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    getValues();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -85,7 +164,7 @@ class _MyAppState extends State<MyApp> {
           backgroundColor: Colors.transparent,
           centerTitle: true,
           title: const Text(
-            "Тасбеҳ",
+            "Тасбиҳ",
             style: TextStyle(
               color: Color.fromRGBO(224, 191, 94, 1),
             ),
@@ -114,16 +193,17 @@ class _MyAppState extends State<MyApp> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  ListText(text_list, widget.yozuvSoni),
+                  ListText(mapList, widget.textCount),
                   Present(
-                      hozirgi: widget.hozirgi, nechtaligi: widget.nechtaligi),
+                      current: widget.current,
+                      count: mapList[widget.textCount]['count']),
                   Column(
                     children: [
                       Buttons(
-                        ozgartirgichPlus,
-                        widget.yozuvSoniObshi,
+                        changerPlus,
+                        widget.textCountAll,
                       ),
-                      All(jami: widget.jami),
+                      All(all: widget.all),
                     ],
                   ),
                 ],

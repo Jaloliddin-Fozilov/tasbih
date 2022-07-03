@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import './rotation.dart';
 
 class Buttons extends StatefulWidget {
-  final Function() ozgartirgichPlus;
-  final int yozuvSoniObshi;
+  final Function() changerPlus;
+  final int textCountAll;
 
-  Buttons(
-    this.ozgartirgichPlus,
-    this.yozuvSoniObshi,
-  );
+  const Buttons(this.changerPlus, this.textCountAll, {Key? key})
+      : super(key: key);
 
   @override
   State<Buttons> createState() => _ButtonsState();
@@ -29,7 +27,7 @@ class _ButtonsState extends State<Buttons> {
               setState(() {
                 _counter++;
               });
-              widget.ozgartirgichPlus();
+              widget.changerPlus();
             },
             borderRadius: BorderRadius.circular(180),
             child: Image.asset(

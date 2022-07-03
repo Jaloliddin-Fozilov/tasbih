@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 class ListText extends StatefulWidget {
-  final List text_list;
-  final int yozuvSoni;
+  final List textMap;
+  final int textCount;
 
-  const ListText(this.text_list, this.yozuvSoni);
+  const ListText(this.textMap, this.textCount, {Key? key}) : super(key: key);
 
   @override
   State<ListText> createState() => _ListTextState();
 }
 
 class _ListTextState extends State<ListText> {
-  String get text => widget.text_list[widget.yozuvSoni];
+  String get text => widget.textMap[widget.textCount]['text'];
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +28,8 @@ class _ListTextState extends State<ListText> {
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: const TextStyle(
-            fontSize: 24,
+          style: TextStyle(
+            fontSize: widget.textMap[widget.textCount]['count'] == 1 ? 14 : 24,
             fontWeight: FontWeight.bold,
           ),
         ),
