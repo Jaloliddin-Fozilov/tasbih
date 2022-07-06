@@ -6,6 +6,7 @@ import '../widgets/present.dart';
 import '../widgets/listText.dart';
 
 class FirstTheme extends StatelessWidget {
+  final Function() changeTheme;
   final Function restart;
   final List textMap;
   final int textCount;
@@ -14,8 +15,8 @@ class FirstTheme extends StatelessWidget {
   final int textCountAll;
   final Function selectText;
 
-  const FirstTheme(this.textMap, this.textCount, this.current, this.restart,
-      this.changerPlus, this.textCountAll, this.selectText,
+  const FirstTheme(this.changeTheme, this.textMap, this.textCount, this.current,
+      this.restart, this.changerPlus, this.textCountAll, this.selectText,
       {Key? key})
       : super(key: key);
 
@@ -26,6 +27,13 @@ class FirstTheme extends StatelessWidget {
         toolbarHeight: 45,
         backgroundColor: Colors.transparent,
         centerTitle: true,
+        leading: IconButton(
+          onPressed: () => changeTheme(),
+          icon: const Icon(
+            Icons.dark_mode,
+            color: Color.fromRGBO(224, 191, 94, 1),
+          ),
+        ),
         title: const Text(
           "Тасбиҳ",
           style: TextStyle(
@@ -45,6 +53,9 @@ class FirstTheme extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height -
+                AppBar().preferredSize.height,
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/background.png'),
@@ -52,7 +63,7 @@ class FirstTheme extends StatelessWidget {
               ),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(15.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,

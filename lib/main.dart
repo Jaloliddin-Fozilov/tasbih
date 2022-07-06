@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:vibration/vibration.dart';
+import 'package:vibration/vibration.dart';
 
+import 'screens/dark_theme.dart';
 import 'screens/first_theme.dart';
 
 void main() {
@@ -9,6 +10,7 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
+  bool isDark = false;
   int current = 0;
   int all = 0;
   int textCount = 0;
@@ -40,12 +42,22 @@ class _MyAppState extends State<MyApp> {
   getValues() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
+      widget.isDark = prefs.getBool('isDarkToSave')!;
       widget.current = prefs.getInt('currentToSave')!;
       widget.all = prefs.getInt('allToSave')!;
       widget.textCount = prefs.getInt('textCountToSave')!;
       widget.textCountAll = prefs.getInt('textCountAllToSave')!;
       widget.count = prefs.getInt('countToSave')!;
     });
+  }
+
+  changeTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    setState(() {
+      widget.isDark = !widget.isDark;
+    });
+    prefs.setBool('isDarkToSave', widget.isDark);
   }
 
   List<Map<String, dynamic>> mapList = [
@@ -83,7 +95,7 @@ class _MyAppState extends State<MyApp> {
         widget.count,
       );
       print('vibration 500');
-      // Vibration.vibrate(duration: 500);
+      Vibration.vibrate(duration: 500);
     });
   }
 
@@ -104,7 +116,7 @@ class _MyAppState extends State<MyApp> {
           widget.current = 0;
           widget.textCountAll = 0;
           print('vibration 350');
-          // Vibration.vibrate(duration: 350);
+          Vibration.vibrate(duration: 350);
           widget.saveValues(
             widget.current,
             widget.all,
@@ -115,7 +127,7 @@ class _MyAppState extends State<MyApp> {
         } else {
           widget.textCount++;
           print('vibration 350');
-          // Vibration.vibrate(duration: 350);
+          Vibration.vibrate(duration: 350);
           widget.current = 0;
           widget.textCountAll = -1;
           widget.saveValues(
@@ -138,6 +150,15 @@ class _MyAppState extends State<MyApp> {
         );
       },
     );
+  }
+
+  void addToAll() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    widget.all++;
+
+    setState(() {
+      prefs.setInt('allToSave', widget.all);
+    });
   }
 
   void selectText(BuildContext context) {
@@ -165,10 +186,21 @@ class _MyAppState extends State<MyApp> {
                         selectedText = object['text'];
                         final selectedTextIndex = mapList.indexWhere(
                             (object) => object['text'] == selectedText);
+                        print('textCount ${widget.textCount}');
 
-                        widget.current = selectedTextIndex;
-                        print(selectedTextIndex);
-                        changerPlus();
+                        setState(() {
+                          widget.textCount = selectedTextIndex;
+                          widget.current = 0;
+                          widget.saveValues(
+                            widget.current,
+                            widget.all,
+                            widget.textCount,
+                            widget.textCountAll,
+                            widget.count,
+                          );
+                        });
+
+                        print('selectedTextIndex $selectedTextIndex');
 
                         Navigator.of(context).pop();
                       },
@@ -199,22 +231,31 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         fontFamily: 'Andika',
         primaryColor: const Color.fromRGBO(2, 25, 69, 1),
-        scaffoldBackgroundColor: const Color.fromRGBO(2, 25, 69, 1),
+        scaffoldBackgroundColor:
+            widget.isDark ? Colors.black : const Color.fromRGBO(2, 25, 69, 1),
         textTheme: const TextTheme(
           bodyText2: TextStyle(
             color: Color.fromRGBO(224, 191, 94, 1),
           ),
         ),
       ),
-      home: FirstTheme(
-        mapList,
-        widget.textCount,
-        widget.all,
-        restart,
-        changerPlus,
-        widget.all,
-        selectText,
-      ),
+      home: widget.isDark
+          ? DarkTheme(
+              changeTheme,
+              restart,
+              widget.all,
+              addToAll,
+            )
+          : FirstTheme(
+              changeTheme,
+              mapList,
+              widget.textCount,
+              widget.current,
+              restart,
+              changerPlus,
+              widget.all,
+              selectText,
+            ),
     );
   }
 }
