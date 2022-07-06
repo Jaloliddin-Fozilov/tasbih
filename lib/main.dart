@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:vibration/vibration.dart';
 
-import './widgets/buttons.dart';
-import './widgets/all.dart';
-import './widgets/present.dart';
-import './widgets/listText.dart';
+import 'screens/first_theme.dart';
 
 void main() {
   runApp(MyApp());
@@ -143,6 +140,57 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
+  void selectText(BuildContext context) {
+    String selectedText = '';
+    showDialog(
+      context: context,
+      builder: (ctx) {
+        return AlertDialog(
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: mapList
+                .map(
+                  (object) => Container(
+                    padding: const EdgeInsets.all(4.0),
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                        border: Border(
+                      bottom: BorderSide(
+                        color: Colors.black,
+                        width: 1.5,
+                      ),
+                    )),
+                    child: InkWell(
+                      onTap: () {
+                        selectedText = object['text'];
+                        final selectedTextIndex = mapList.indexWhere(
+                            (object) => object['text'] == selectedText);
+
+                        widget.current = selectedTextIndex;
+                        print(selectedTextIndex);
+                        changerPlus();
+
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        object['text'],
+                      ),
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('YOPISH'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     getValues();
@@ -158,59 +206,14 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 45,
-          backgroundColor: Colors.transparent,
-          centerTitle: true,
-          title: const Text(
-            "Тасбиҳ",
-            style: TextStyle(
-              color: Color.fromRGBO(224, 191, 94, 1),
-            ),
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.restart_alt,
-                color: Color.fromRGBO(224, 191, 94, 1),
-              ),
-              onPressed: () => restart(),
-            ),
-          ],
-        ),
-        body: SafeArea(
-          child: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/background.png'),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  ListText(mapList, widget.textCount),
-                  Present(
-                      current: widget.current,
-                      count: mapList[widget.textCount]['count']),
-                  Column(
-                    children: [
-                      Buttons(
-                        changerPlus,
-                        widget.textCountAll,
-                      ),
-                      All(all: widget.all),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
+      home: FirstTheme(
+        mapList,
+        widget.textCount,
+        widget.all,
+        restart,
+        changerPlus,
+        widget.all,
+        selectText,
       ),
     );
   }
