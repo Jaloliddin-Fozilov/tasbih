@@ -94,7 +94,6 @@ class _MyAppState extends State<MyApp> {
         widget.textCountAll,
         widget.count,
       );
-      print('vibration 500');
       Vibration.vibrate(duration: 500);
     });
   }
@@ -115,7 +114,6 @@ class _MyAppState extends State<MyApp> {
           widget.textCount = 0;
           widget.current = 0;
           widget.textCountAll = 0;
-          print('vibration 350');
           Vibration.vibrate(duration: 350);
           widget.saveValues(
             widget.current,
@@ -126,7 +124,6 @@ class _MyAppState extends State<MyApp> {
           );
         } else {
           widget.textCount++;
-          print('vibration 350');
           Vibration.vibrate(duration: 350);
           widget.current = 0;
           widget.textCountAll = -1;
