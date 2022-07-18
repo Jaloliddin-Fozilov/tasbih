@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:tasbih/generated/locale_keys.g.dart';
 
 import '../widgets/buttons.dart';
 import '../widgets/all.dart';
@@ -34,9 +36,9 @@ class FirstTheme extends StatelessWidget {
             color: Color.fromRGBO(224, 191, 94, 1),
           ),
         ),
-        title: const Text(
-          "Тасбиҳ",
-          style: TextStyle(
+        title: Text(
+          LocaleKeys.title.tr(),
+          style: const TextStyle(
             color: Color.fromRGBO(224, 191, 94, 1),
           ),
         ),
@@ -55,7 +57,8 @@ class FirstTheme extends StatelessWidget {
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height -
-                AppBar().preferredSize.height,
+                AppBar().preferredSize.height -
+                MediaQuery.of(context).padding.top,
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: AssetImage('assets/images/background.png'),

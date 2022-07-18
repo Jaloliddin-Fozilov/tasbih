@@ -1,12 +1,30 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:vibration/vibration.dart';
+import 'package:tasbih/generated/locale_keys.g.dart';
+// import 'package:vibration/vibration.dart';
 
+import 'generated/codegen_loader.g.dart';
 import 'screens/dark_theme.dart';
 import 'screens/first_theme.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [
+        Locale('uz_Cyrl'),
+        Locale('en_EN'),
+        Locale('ru_RU'),
+        Locale('uz_UZ'),
+      ],
+      path: 'assets/i18n', // <-- change the path of the translation files
+      fallbackLocale: const Locale('uz_Cyrl'),
+      assetLoader: const CodegenLoader(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -94,7 +112,7 @@ class _MyAppState extends State<MyApp> {
         widget.textCountAll,
         widget.count,
       );
-      Vibration.vibrate(duration: 500);
+      // Vibration.vibrate(duration: 500);
     });
   }
 
@@ -114,7 +132,7 @@ class _MyAppState extends State<MyApp> {
           widget.textCount = 0;
           widget.current = 0;
           widget.textCountAll = 0;
-          Vibration.vibrate(duration: 350);
+          // Vibration.vibrate(duration: 350);
           widget.saveValues(
             widget.current,
             widget.all,
@@ -124,7 +142,7 @@ class _MyAppState extends State<MyApp> {
           );
         } else {
           widget.textCount++;
-          Vibration.vibrate(duration: 350);
+          // Vibration.vibrate(duration: 350);
           widget.current = 0;
           widget.textCountAll = -1;
           widget.saveValues(
@@ -183,7 +201,6 @@ class _MyAppState extends State<MyApp> {
                         selectedText = object['text'];
                         final selectedTextIndex = mapList.indexWhere(
                             (object) => object['text'] == selectedText);
-                        print('textCount ${widget.textCount}');
 
                         setState(() {
                           widget.textCount = selectedTextIndex;
@@ -196,8 +213,6 @@ class _MyAppState extends State<MyApp> {
                             widget.count,
                           );
                         });
-
-                        print('selectedTextIndex $selectedTextIndex');
 
                         Navigator.of(context).pop();
                       },
@@ -224,6 +239,10 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     getValues();
     return MaterialApp(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
+      title: LocaleKeys.title.tr(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Andika',
