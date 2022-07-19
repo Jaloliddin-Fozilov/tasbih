@@ -66,6 +66,12 @@ class _MyAppState extends State<MyApp> {
     prefs.setBool('isDarkToSave', widget.isDark);
   }
 
+  void setLocale(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
   void restart() {
     setState(() {
       widget.all = 0;
@@ -81,12 +87,6 @@ class _MyAppState extends State<MyApp> {
         widget.count,
       );
       // Vibration.vibrate(duration: 500);
-    });
-  }
-
-  void setLocale(Locale locale) {
-    setState(() {
-      _locale = locale;
     });
   }
 
@@ -124,12 +124,6 @@ class _MyAppState extends State<MyApp> {
                   imageUrl: 'assets/images/russia.png',
                   languageCode: 'ru',
                   countryCode: 'RU',
-                ),
-                LanguageItem(
-                  languageName: 'kazakh'.i18n(),
-                  imageUrl: 'assets/images/kazakhstan.png',
-                  languageCode: 'kz',
-                  countryCode: 'KZ',
                 ),
                 LanguageItem(
                   languageName: 'turk'.i18n(),
@@ -174,7 +168,6 @@ class _MyAppState extends State<MyApp> {
                 .i18n(),
       },
     ];
-
     void changerPlus() {
       setState(
         () {
@@ -315,7 +308,6 @@ class _MyAppState extends State<MyApp> {
         Locale('uz', 'UZ'),
         Locale('uz', 'Cyrl'),
         Locale('ru', 'RU'),
-        Locale('kz', 'KZ'),
         Locale('tr', 'TR'),
       ],
       title: "title".i18n(),
