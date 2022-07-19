@@ -1,6 +1,5 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:tasbih/generated/locale_keys.g.dart';
+import 'package:localization/localization.dart';
 
 class All extends StatelessWidget {
   const All({
@@ -22,7 +21,7 @@ class All extends StatelessWidget {
         color: const Color(0xff021233).withOpacity(0.8),
       ),
       child: Text(
-        "${LocaleKeys.all.tr()}: $all",
+        "${'all'.i18n()}: $all",
         style: const TextStyle(fontSize: 22),
       ),
     );

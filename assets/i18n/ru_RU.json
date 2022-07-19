@@ -1,5 +1,16 @@
 {
-    "title" : "Тасбиҳ",
-    "all" : "Жами",
-    "close" : "Назад"
+    "title" : "Тасбих",
+    "all" : "Всего",
+    "close" : "Назад",
+    "change_language" : "Изменить язык",
+    "uzbek": "O‘zbekcha",
+    "uzbek_cyrl": "Ўзбекча",
+    "english": "English",
+    "russian": "Русский",
+    "kazakh": "Қазақша",
+    "turk": "Türkçe",
+    "SubhanAllah" : "Субханаллах",
+    "Al-hamdu_lillah": "Альхамдулиллях",
+    "Allahu_Akbar":"Аллаху акбар",
+    "La_illaha_illallah_wah-dahu_la_sharika_lah_Lahul-mulku_wa_lahul_hamd_wa_huwa_ala_Kul-li_shayin_Qadeer":"Ля иляха илля-Ллаху вахда-ху ля шарикя ля-ху. Ля-ху-ль-мульку, ва ля-ху-ль-хамд. Йухйи ва йумиту ва хуа ‘аля кулли шай’ин кадир"
 }

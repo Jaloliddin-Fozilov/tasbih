@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:localization/localization.dart';
 
 class DarkTheme extends StatefulWidget {
   final Function() changeTheme;
   final Function() restart;
   final int all;
   final Function() addToAll;
+  final Function changeLanguage;
   const DarkTheme(this.changeTheme, this.restart, this.all, this.addToAll,
+      this.changeLanguage,
       {Key? key})
       : super(key: key);
 
@@ -22,19 +25,26 @@ class _DarkThemeState extends State<DarkTheme> {
         backgroundColor: const Color.fromARGB(31, 103, 103, 103),
         centerTitle: true,
         leading: IconButton(
-          onPressed: () => widget.changeTheme(),
+          onPressed: () => widget.changeLanguage(context),
           icon: const Icon(
-            Icons.light_mode,
+            Icons.settings,
             color: Color.fromARGB(255, 255, 255, 255),
           ),
         ),
-        title: const Text(
-          "Тасбиҳ",
-          style: TextStyle(
+        title: Text(
+          "title".i18n(),
+          style: const TextStyle(
             color: Color.fromARGB(255, 255, 255, 255),
           ),
         ),
         actions: [
+          IconButton(
+            onPressed: () => widget.changeTheme(),
+            icon: const Icon(
+              Icons.light_mode,
+              color: Color.fromARGB(255, 255, 255, 255),
+            ),
+          ),
           IconButton(
             icon: const Icon(
               Icons.restart_alt,

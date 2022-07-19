@@ -1,5 +1,16 @@
 {
     "title" : "Tasbih",
     "all" : "Jami",
-    "close" : "Ortga"
+    "close" : "Ortga",
+    "change_language" : "Tilni o'zgartirish",
+    "uzbek": "O‘zbekcha",
+    "uzbek_cyrl": "Ўзбекча",
+    "english": "English",
+    "russian": "Русский",
+    "kazakh": "Қазақша",
+    "turk": "Türkçe",
+    "SubhanAllah" : "SubhaanAlloh",
+    "Al-hamdu_lillah": "Alhamdulillaah",
+    "Allahu_Akbar":"Allohu Akbar",
+    "La_illaha_illallah_wah-dahu_la_sharika_lah_Lahul-mulku_wa_lahul_hamd_wa_huwa_ala_Kul-li_shayin_Qadeer":"Laa ilaaha illallohu vahdahuv laa shariyka lah, lahul mulku va lahul hamdu va huva 'alaa kulli shay'in qodiyr"
 }

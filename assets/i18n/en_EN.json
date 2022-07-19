@@ -1,5 +1,16 @@
 {
-    "title" : "Tasbeeh",
-    "all" : "All",
-    "close" : "Close"
+    "title" : "Tasbih",
+    "all" : "Total",
+    "close" : "Close",
+    "change_language" : "Choose language",
+    "uzbek": "O‘zbekcha",
+    "uzbek_cyrl": "Ўзбекча",
+    "english": "English",
+    "russian": "Русский",
+    "kazakh": "Қазақша",
+    "turk": "Türkçe",
+    "SubhanAllah" : "SubhanAllah",
+    "Al-hamdu_lillah": "Alhamdulillah",
+    "Allahu_Akbar":"Allahu Akbar",
+    "La_illaha_illallah_wah-dahu_la_sharika_lah_Lahul-mulku_wa_lahul_hamd_wa_huwa_ala_Kul-li_shayin_Qadeer":"La illaha illallah, wah-dahu la sharika lah, Lahul-mulku wa lahul hamd, wa huwa ‘ala Kul-li shayin Qadeer"
 }

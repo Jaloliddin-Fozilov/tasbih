@@ -1,30 +1,15 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tasbih/generated/locale_keys.g.dart';
-// import 'package:vibration/vibration.dart';
+import 'package:localization/localization.dart';
 
-import 'generated/codegen_loader.g.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tasbih/widgets/language_item.dart';
+// import 'package:vibration/vibration.dart';
 import 'screens/dark_theme.dart';
 import 'screens/first_theme.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await EasyLocalization.ensureInitialized();
-  runApp(
-    EasyLocalization(
-      supportedLocales: const [
-        Locale('uz_Cyrl'),
-        Locale('en_EN'),
-        Locale('ru_RU'),
-        Locale('uz_UZ'),
-      ],
-      path: 'assets/i18n', // <-- change the path of the translation files
-      fallbackLocale: const Locale('uz_Cyrl'),
-      assetLoader: const CodegenLoader(),
-      child: MyApp(),
-    ),
-  );
+void main() {
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -51,12 +36,15 @@ class MyApp extends StatefulWidget {
   }
 
   @override
-  _MyAppState createState() {
-    return _MyAppState();
-  }
+  _MyAppState createState() => _MyAppState();
+
+  static _MyAppState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_MyAppState>();
 }
 
 class _MyAppState extends State<MyApp> {
+  Locale? _locale;
+
   getValues() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -78,26 +66,6 @@ class _MyAppState extends State<MyApp> {
     prefs.setBool('isDarkToSave', widget.isDark);
   }
 
-  List<Map<String, dynamic>> mapList = [
-    {
-      "count": 33,
-      "text": "Субҳааналлоҳ",
-    },
-    {
-      "count": 33,
-      "text": "Алҳамдулиллааҳ",
-    },
-    {
-      "count": 33,
-      "text": "Аллоҳу Акбар",
-    },
-    {
-      "count": 1,
-      "text":
-          "Лаа илааҳа иллаллоҳу ваҳдаҳув лаа шарийка лаҳ, лаҳул мулку ва лаҳул ҳамду ва ҳува ъалаа кулли шайъин қодийр",
-    },
-  ];
-
   void restart() {
     setState(() {
       widget.all = 0;
@@ -116,118 +84,66 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  void changerPlus() {
-    setState(
-      () {
-        if (widget.textCountAll < mapList[widget.textCount]['count'] - 1) {
-          widget.current++;
-          widget.saveValues(
-            widget.current,
-            widget.all,
-            widget.textCount,
-            widget.textCountAll,
-            widget.count,
-          );
-        } else if (widget.textCount >= mapList.length - 1) {
-          widget.textCount = 0;
-          widget.current = 0;
-          widget.textCountAll = 0;
-          // Vibration.vibrate(duration: 350);
-          widget.saveValues(
-            widget.current,
-            widget.all,
-            widget.textCount,
-            widget.textCountAll,
-            widget.count,
-          );
-        } else {
-          widget.textCount++;
-          // Vibration.vibrate(duration: 350);
-          widget.current = 0;
-          widget.textCountAll = -1;
-          widget.saveValues(
-            widget.current,
-            widget.all,
-            widget.textCount,
-            widget.textCountAll,
-            widget.count,
-          );
-        }
-
-        widget.all++;
-        widget.textCountAll++;
-        widget.saveValues(
-          widget.current,
-          widget.all,
-          widget.textCount,
-          widget.textCountAll,
-          widget.count,
-        );
-      },
-    );
-  }
-
-  void addToAll() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    widget.all++;
-
+  void setLocale(Locale locale) {
     setState(() {
-      prefs.setInt('allToSave', widget.all);
+      _locale = locale;
     });
   }
 
-  void selectText(BuildContext context) {
-    String selectedText = '';
+  void changeLanguage(BuildContext context) {
     showDialog(
       context: context,
       builder: (ctx) {
         return AlertDialog(
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: mapList
-                .map(
-                  (object) => Container(
-                    padding: const EdgeInsets.all(4.0),
-                    width: double.infinity,
-                    decoration: const BoxDecoration(
-                        border: Border(
-                      bottom: BorderSide(
-                        color: Colors.black,
-                        width: 1.5,
-                      ),
-                    )),
-                    child: InkWell(
-                      onTap: () {
-                        selectedText = object['text'];
-                        final selectedTextIndex = mapList.indexWhere(
-                            (object) => object['text'] == selectedText);
-
-                        setState(() {
-                          widget.textCount = selectedTextIndex;
-                          widget.current = 0;
-                          widget.saveValues(
-                            widget.current,
-                            widget.all,
-                            widget.textCount,
-                            widget.textCountAll,
-                            widget.count,
-                          );
-                        });
-
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        object['text'],
-                      ),
-                    ),
-                  ),
-                )
-                .toList(),
+          title: Text('change_language'.i18n()),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                LanguageItem(
+                  languageName: 'uzbek'.i18n(),
+                  imageUrl: 'assets/images/uzbekistan.png',
+                  languageCode: 'uz',
+                  countryCode: 'UZ',
+                ),
+                LanguageItem(
+                  languageName: 'uzbek_cyrl'.i18n(),
+                  imageUrl: 'assets/images/uzbekistan.png',
+                  languageCode: 'uz',
+                  countryCode: 'Cyrl',
+                ),
+                LanguageItem(
+                  languageName: 'english'.i18n(),
+                  imageUrl: 'assets/images/united-states.png',
+                  languageCode: 'en',
+                  countryCode: 'EN',
+                ),
+                LanguageItem(
+                  languageName: 'russian'.i18n(),
+                  imageUrl: 'assets/images/russia.png',
+                  languageCode: 'ru',
+                  countryCode: 'RU',
+                ),
+                LanguageItem(
+                  languageName: 'kazakh'.i18n(),
+                  imageUrl: 'assets/images/kazakhstan.png',
+                  languageCode: 'kz',
+                  countryCode: 'KZ',
+                ),
+                LanguageItem(
+                  languageName: 'turk'.i18n(),
+                  imageUrl: 'assets/images/turkey.png',
+                  languageCode: 'tr',
+                  countryCode: 'TR',
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('YOPISH'),
+              child: Text('close'.i18n()),
             ),
           ],
         );
@@ -237,12 +153,172 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    getValues();
+    LocalJsonLocalization.delegate.directories = ['assets/i18n'];
+    List<Map<String, dynamic>> mapList = [
+      {
+        "count": 33,
+        "text": "SubhanAllah".i18n(),
+      },
+      {
+        "count": 33,
+        "text": "Al-hamdu_lillah".i18n(),
+      },
+      {
+        "count": 33,
+        "text": "Allahu_Akbar".i18n(),
+      },
+      {
+        "count": 1,
+        "text":
+            "La_illaha_illallah_wah-dahu_la_sharika_lah_Lahul-mulku_wa_lahul_hamd_wa_huwa_ala_Kul-li_shayin_Qadeer"
+                .i18n(),
+      },
+    ];
+
+    void changerPlus() {
+      setState(
+        () {
+          if (widget.textCountAll < mapList[widget.textCount]['count'] - 1) {
+            widget.current++;
+            widget.saveValues(
+              widget.current,
+              widget.all,
+              widget.textCount,
+              widget.textCountAll,
+              widget.count,
+            );
+          } else if (widget.textCount >= mapList.length - 1) {
+            widget.textCount = 0;
+            widget.current = 0;
+            widget.textCountAll = 0;
+            // Vibration.vibrate(duration: 350);
+            widget.saveValues(
+              widget.current,
+              widget.all,
+              widget.textCount,
+              widget.textCountAll,
+              widget.count,
+            );
+          } else {
+            widget.textCount++;
+            // Vibration.vibrate(duration: 350);
+            widget.current = 0;
+            widget.textCountAll = -1;
+            widget.saveValues(
+              widget.current,
+              widget.all,
+              widget.textCount,
+              widget.textCountAll,
+              widget.count,
+            );
+          }
+
+          widget.all++;
+          widget.textCountAll++;
+          widget.saveValues(
+            widget.current,
+            widget.all,
+            widget.textCount,
+            widget.textCountAll,
+            widget.count,
+          );
+        },
+      );
+    }
+
+    void addToAll() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      widget.all++;
+
+      setState(() {
+        prefs.setInt('allToSave', widget.all);
+      });
+    }
+
+    void selectText(BuildContext context) {
+      String selectedText = '';
+      showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: mapList
+                  .map(
+                    (object) => Container(
+                      padding: const EdgeInsets.all(4.0),
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                          border: Border(
+                        bottom: BorderSide(
+                          color: Colors.black,
+                          width: 1.5,
+                        ),
+                      )),
+                      child: InkWell(
+                        onTap: () {
+                          selectedText = object['text'];
+                          final selectedTextIndex = mapList.indexWhere(
+                              (object) => object['text'] == selectedText);
+
+                          setState(() {
+                            widget.textCount = selectedTextIndex;
+                            widget.current = 0;
+                            widget.saveValues(
+                              widget.current,
+                              widget.all,
+                              widget.textCount,
+                              widget.textCountAll,
+                              widget.count,
+                            );
+                          });
+
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(
+                          object['text'],
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('close'.i18n()),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return MaterialApp(
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale,
-      title: LocaleKeys.title.tr(),
+      localeResolutionCallback: (locale, supportedLocales) {
+        if (supportedLocales.contains(locale)) {
+          return locale;
+        }
+
+        return const Locale('en', 'EN');
+      },
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        LocalJsonLocalization.delegate,
+      ],
+      locale: _locale,
+      supportedLocales: const [
+        Locale('en', 'EN'),
+        Locale('uz', 'UZ'),
+        Locale('uz', 'Cyrl'),
+        Locale('ru', 'RU'),
+        Locale('kz', 'KZ'),
+        Locale('tr', 'TR'),
+      ],
+      title: "title".i18n(),
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: 'Andika',
@@ -261,6 +337,7 @@ class _MyAppState extends State<MyApp> {
               restart,
               widget.all,
               addToAll,
+              changeLanguage,
             )
           : FirstTheme(
               changeTheme,
@@ -271,6 +348,7 @@ class _MyAppState extends State<MyApp> {
               changerPlus,
               widget.all,
               selectText,
+              changeLanguage,
             ),
     );
   }

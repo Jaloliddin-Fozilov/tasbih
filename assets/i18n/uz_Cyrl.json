@@ -1,5 +1,16 @@
 {
     "title" : "Тасбиҳ",
     "all" : "Жами",
-    "close" : "Ортга"
+    "close" : "Ортга",
+    "change_language" : "Тилни ўзгартириш",
+    "uzbek": "O‘zbekcha",
+    "uzbek_cyrl": "Ўзбекча",
+    "english": "English",
+    "russian": "Русский",
+    "kazakh": "Қазақша",
+    "turk": "Türkçe",
+    "SubhanAllah" : "Субҳааналлоҳ",
+    "Al-hamdu_lillah": "Алҳамдулиллааҳ",
+    "Allahu_Akbar":"Аллоҳу Акбар",
+    "La_illaha_illallah_wah-dahu_la_sharika_lah_Lahul-mulku_wa_lahul_hamd_wa_huwa_ala_Kul-li_shayin_Qadeer":"Лаа илааҳа иллаллоҳу ваҳдаҳув лаа шарийка лаҳ, лаҳул мулку ва лаҳул ҳамду ва ҳува ъалаа кулли шайъин қодийр"
 }
