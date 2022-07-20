@@ -4,7 +4,7 @@ import 'package:localization/localization.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tasbih/widgets/language_item.dart';
-// import 'package:vibration/vibration.dart';
+import 'package:vibration/vibration.dart';
 import 'screens/dark_theme.dart';
 import 'screens/first_theme.dart';
 
@@ -13,12 +13,15 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
+  MyApp({Key? key}) : super(key: key);
   bool isDark = false;
   int current = 0;
   int all = 0;
   int textCount = 0;
   int textCountAll = 0;
   int count = 33;
+
+  bool languageSelected = false;
 
   saveValues(
     int currentToSave,
@@ -48,6 +51,7 @@ class _MyAppState extends State<MyApp> {
   getValues() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
+      widget.languageSelected = prefs.getBool('languageSelected')!;
       widget.isDark = prefs.getBool('isDarkToSave')!;
       widget.current = prefs.getInt('currentToSave')!;
       widget.all = prefs.getInt('allToSave')!;
@@ -72,6 +76,15 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  getLanguageFromLocal(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String languageCode = prefs.getString('languageCode')!;
+    String countryCode = prefs.getString('countryCode')!;
+    MyApp.of(context)!.setLocale(
+      Locale.fromSubtags(languageCode: languageCode, countryCode: countryCode),
+    );
+  }
+
   void restart() {
     setState(() {
       widget.all = 0;
@@ -86,7 +99,7 @@ class _MyAppState extends State<MyApp> {
         widget.textCountAll,
         widget.count,
       );
-      // Vibration.vibrate(duration: 500);
+      Vibration.vibrate(duration: 500);
     });
   }
 
@@ -145,155 +158,29 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
+  void addToAll() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    widget.all++;
+
+    setState(() {
+      prefs.setInt('allToSave', widget.all);
+    });
+  }
+
+  void reloadPage() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    getValues();
     LocalJsonLocalization.delegate.directories = ['assets/i18n'];
-    List<Map<String, dynamic>> mapList = [
-      {
-        "count": 33,
-        "text": "SubhanAllah".i18n(),
-      },
-      {
-        "count": 33,
-        "text": "Al-hamdu_lillah".i18n(),
-      },
-      {
-        "count": 33,
-        "text": "Allahu_Akbar".i18n(),
-      },
-      {
-        "count": 1,
-        "text":
-            "La_illaha_illallah_wah-dahu_la_sharika_lah_Lahul-mulku_wa_lahul_hamd_wa_huwa_ala_Kul-li_shayin_Qadeer"
-                .i18n(),
-      },
-    ];
-    void changerPlus() {
-      setState(
-        () {
-          if (widget.textCountAll < mapList[widget.textCount]['count'] - 1) {
-            widget.current++;
-            widget.saveValues(
-              widget.current,
-              widget.all,
-              widget.textCount,
-              widget.textCountAll,
-              widget.count,
-            );
-          } else if (widget.textCount >= mapList.length - 1) {
-            widget.textCount = 0;
-            widget.current = 0;
-            widget.textCountAll = 0;
-            // Vibration.vibrate(duration: 350);
-            widget.saveValues(
-              widget.current,
-              widget.all,
-              widget.textCount,
-              widget.textCountAll,
-              widget.count,
-            );
-          } else {
-            widget.textCount++;
-            // Vibration.vibrate(duration: 350);
-            widget.current = 0;
-            widget.textCountAll = -1;
-            widget.saveValues(
-              widget.current,
-              widget.all,
-              widget.textCount,
-              widget.textCountAll,
-              widget.count,
-            );
-          }
-
-          widget.all++;
-          widget.textCountAll++;
-          widget.saveValues(
-            widget.current,
-            widget.all,
-            widget.textCount,
-            widget.textCountAll,
-            widget.count,
-          );
-        },
-      );
-    }
-
-    void addToAll() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      widget.all++;
-
-      setState(() {
-        prefs.setInt('allToSave', widget.all);
-      });
-    }
-
-    void selectText(BuildContext context) {
-      String selectedText = '';
-      showDialog(
-        context: context,
-        builder: (ctx) {
-          return AlertDialog(
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: mapList
-                  .map(
-                    (object) => Container(
-                      padding: const EdgeInsets.all(4.0),
-                      width: double.infinity,
-                      decoration: const BoxDecoration(
-                          border: Border(
-                        bottom: BorderSide(
-                          color: Colors.black,
-                          width: 1.5,
-                        ),
-                      )),
-                      child: InkWell(
-                        onTap: () {
-                          selectedText = object['text'];
-                          final selectedTextIndex = mapList.indexWhere(
-                              (object) => object['text'] == selectedText);
-
-                          setState(() {
-                            widget.textCount = selectedTextIndex;
-                            widget.current = 0;
-                            widget.saveValues(
-                              widget.current,
-                              widget.all,
-                              widget.textCount,
-                              widget.textCountAll,
-                              widget.count,
-                            );
-                          });
-
-                          Navigator.of(context).pop();
-                        },
-                        child: Text(
-                          object['text'],
-                        ),
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: Text('close'.i18n()),
-              ),
-            ],
-          );
-        },
-      );
-    }
 
     return MaterialApp(
       localeResolutionCallback: (locale, supportedLocales) {
         if (supportedLocales.contains(locale)) {
           return locale;
         }
-
         return const Locale('en', 'EN');
       },
       localizationsDelegates: [
@@ -323,25 +210,164 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: widget.isDark
-          ? DarkTheme(
-              changeTheme,
-              restart,
-              widget.all,
-              addToAll,
-              changeLanguage,
-            )
-          : FirstTheme(
-              changeTheme,
-              mapList,
-              widget.textCount,
-              widget.current,
-              restart,
-              changerPlus,
-              widget.all,
-              selectText,
-              changeLanguage,
-            ),
+      home: Builder(builder: (context) {
+        List<Map<String, dynamic>> mapList = [
+          {
+            "count": 33,
+            "text": "SubhanAllah".i18n(),
+          },
+          {
+            "count": 33,
+            "text": "Al-hamdu_lillah".i18n(),
+          },
+          {
+            "count": 33,
+            "text": "Allahu_Akbar".i18n(),
+          },
+          {
+            "count": 1,
+            "text":
+                "La_illaha_illallah_wah-dahu_la_sharika_lah_Lahul-mulku_wa_lahul_hamd_wa_huwa_ala_Kul-li_shayin_Qadeer"
+                    .i18n(),
+          },
+        ];
+        getLanguageFromLocal(context);
+        Future.delayed(Duration.zero, () async {
+          reloadPage();
+        });
+
+        void selectText(BuildContext context) {
+          String selectedText = '';
+          showDialog(
+            context: context,
+            builder: (ctx) {
+              return AlertDialog(
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: mapList
+                      .map(
+                        (object) => Container(
+                          padding: const EdgeInsets.all(4.0),
+                          width: double.infinity,
+                          decoration: const BoxDecoration(
+                              border: Border(
+                            bottom: BorderSide(
+                              color: Colors.black,
+                              width: 1.5,
+                            ),
+                          )),
+                          child: InkWell(
+                            onTap: () {
+                              selectedText = object['text'];
+                              final selectedTextIndex = mapList.indexWhere(
+                                  (object) => object['text'] == selectedText);
+
+                              setState(() {
+                                widget.textCount = selectedTextIndex;
+                                widget.current = 0;
+                                widget.saveValues(
+                                  widget.current,
+                                  widget.all,
+                                  widget.textCount,
+                                  widget.textCountAll,
+                                  widget.count,
+                                );
+                              });
+
+                              Navigator.of(context).pop();
+                            },
+                            child: Text(
+                              object['text'],
+                            ),
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: Text('close'.i18n()),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+
+        void changerPlus() {
+          setState(
+            () {
+              if (widget.textCountAll <
+                  mapList[widget.textCount]['count'] - 1) {
+                widget.current++;
+                widget.saveValues(
+                  widget.current,
+                  widget.all,
+                  widget.textCount,
+                  widget.textCountAll,
+                  widget.count,
+                );
+              } else if (widget.textCount >= mapList.length - 1) {
+                widget.textCount = 0;
+                widget.current = 0;
+                widget.textCountAll = 0;
+                Vibration.vibrate(duration: 350);
+                widget.saveValues(
+                  widget.current,
+                  widget.all,
+                  widget.textCount,
+                  widget.textCountAll,
+                  widget.count,
+                );
+              } else {
+                widget.textCount++;
+                Vibration.vibrate(duration: 350);
+                widget.current = 0;
+                widget.textCountAll = -1;
+                widget.saveValues(
+                  widget.current,
+                  widget.all,
+                  widget.textCount,
+                  widget.textCountAll,
+                  widget.count,
+                );
+              }
+
+              widget.all++;
+              widget.textCountAll++;
+              widget.saveValues(
+                widget.current,
+                widget.all,
+                widget.textCount,
+                widget.textCountAll,
+                widget.count,
+              );
+            },
+          );
+        }
+
+        return widget.isDark
+            ? DarkTheme(
+                changeTheme,
+                restart,
+                widget.all,
+                addToAll,
+                changeLanguage,
+              )
+            : FirstTheme(
+                changeTheme,
+                mapList,
+                widget.textCount,
+                widget.current,
+                restart,
+                changerPlus,
+                widget.all,
+                selectText,
+                changeLanguage,
+              );
+      }),
     );
   }
 }

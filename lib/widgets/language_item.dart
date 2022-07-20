@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../main.dart';
 
@@ -26,9 +27,15 @@ class LanguageItem extends StatelessWidget {
         ),
       ),
       title: Text(languageName),
-      onTap: () {
+      onTap: () async {
         MyApp.of(context)!.setLocale(Locale.fromSubtags(
             languageCode: languageCode, countryCode: countryCode));
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+
+        prefs.setBool('languageSelected', true);
+        prefs.setString('languageCode', languageCode);
+        prefs.setString('countryCode', countryCode.toString());
+
         Navigator.of(context).pop();
       },
     );
